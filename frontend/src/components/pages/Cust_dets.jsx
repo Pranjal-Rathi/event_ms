@@ -30,17 +30,48 @@ export const CustomerDetailsForm = () => {
     }
   };
 
+  // const handleUpdate = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const updatedData = {};
+  //     if (updateCustomerUsername !== "") {
+  //       updatedData.customer_username = updateCustomerUsername;
+  //     }
+  //     if (updateCustomerEmail !== "") {
+  //       updatedData.customer_email = updateCustomerEmail;
+  //     }
+  //     if (updateCustomerContactNumber !== "") {
+  //       updatedData.customer_contact_number = updateCustomerContactNumber;
+  //     }
+  //     if (Object.keys(updatedData).length === 0) {
+  //       console.log("No new data entered, nothing to update");
+  //       return;
+  //     }
+
+  //     const response = await axios.put(
+  //       `http://localhost:1337/customers/${updateCustomerId}`,
+  //       updatedData
+  //     );
+  //     console.log("Customer details updated successfully");
+  //     // Reset form
+  //     setUpdateCustomerId("");
+  //     setUpdateCustomerUsername("");
+  //     setUpdateCustomerEmail("");
+  //     setUpdateCustomerContactNumber("");
+  //   } catch (error) {
+  //     console.error("Error updating customer details:", error);
+  //   }
+  // };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:1337/customers/${updateCustomerId}`,
-        {
-          customer_username: updateCustomerUsername,
-          customer_email: updateCustomerEmail,
-          customer_contact_number: updateCustomerContactNumber,
-        }
-      );
+      const response = await axios.put(`http://localhost:1337/customers`, {
+        customer_id: updateCustomerId,
+        customer_username: updateCustomerUsername,
+        customer_email: updateCustomerEmail,
+        customer_contact_number: updateCustomerContactNumber,
+      });
       console.log("Customer details updated successfully");
       // Reset form
       setUpdateCustomerId("");
@@ -55,9 +86,9 @@ export const CustomerDetailsForm = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:1337/customers/${deleteCustomerId}`
-      );
+      const response = await axios.delete(`http://localhost:1337/customers`, {
+        customer_id: deleteCustomerId,
+      });
       console.log("Customer deleted successfully");
       // Reset form
       setDeleteCustomerId("");
@@ -68,7 +99,7 @@ export const CustomerDetailsForm = () => {
 
   return (
     <div className="form">
-      <h1 style={{ color: "ORANGE" }}>CUSTOMER DETAILS</h1>
+      <h1>CUSTOMER DETAILS</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -103,7 +134,7 @@ export const CustomerDetailsForm = () => {
         <button type="submit">Submit Customer Details</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>UPDATE CUSTOMER</h1>
+      <h1>UPDATE CUSTOMER</h1>
       <form onSubmit={handleUpdate}>
         <label>
           Customer ID:
@@ -121,7 +152,7 @@ export const CustomerDetailsForm = () => {
             type="text"
             value={updateCustomerUsername}
             onChange={(e) => setUpdateCustomerUsername(e.target.value)}
-            required
+            // required
             style={{ color: "black" }}
           />
         </label>
@@ -131,7 +162,7 @@ export const CustomerDetailsForm = () => {
             type="email"
             value={updateCustomerEmail}
             onChange={(e) => setUpdateCustomerEmail(e.target.value)}
-            required
+            // required
             style={{ color: "black" }}
           />
         </label>
@@ -141,14 +172,14 @@ export const CustomerDetailsForm = () => {
             type="text"
             value={updateCustomerContactNumber}
             onChange={(e) => setUpdateCustomerContactNumber(e.target.value)}
-            required
+            // required
             style={{ color: "black" }}
           />
         </label>
         <button type="submit">Update Customer</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>DELETE CUSTOMER</h1>
+      <h1>DELETE CUSTOMER</h1>
       <form onSubmit={handleDelete}>
         <label>
           Customer ID:

@@ -1,14 +1,12 @@
 .App {
-  background-color: #0f172a;
-  /* background-color: #fff; */
+  background-color: #F1F7ED; /* Light background color */
+  /* background-color: #F1F7ED; Light background color */
   height: 100%;
   width: 100%;
 }
 
 .form {
-  /* background-color: #0f172a; Dark blue background color */
-  background-color: rgba(86, 99, 124, 0.5);
-  /* background: grey; */
+  background-color: rgba(36, 62, 54, 0.5); /* Dark grey background color */
   padding: 20px;
   border-radius: 5px;
   width: 40%; /* Adjust width as needed */
@@ -17,20 +15,20 @@
 }
 
 .form h1 {
-  color: #fff; /* White text color */
+  color: #243E36; /* Dark text color */
   margin-bottom: 15px;
   font-size: large;
   font-weight: 200;
 }
 
 .form form {
-  display:flex;
+  display: flex;
   flex-direction: column; /* Display form elements vertically */
 }
 
 .form label {
-  color: #fff; /* White text color */
-  text-align:right ;
+  color: #243E36; /* Dark text color */
+  text-align: right;
   margin-right: 8rem;
 }
 
@@ -38,15 +36,15 @@
   padding: 8px;
   margin-bottom: 10px;
   border-radius: 3px;
-  border: none;
-  color: black;
+  border: 1px solid #C2A83E;
+  color: #495057;
 }
 
 .form button {
   padding: 8px 12px;
   border-radius: 3px;
   border: none;
-  background-color: #0e8540; /* Green button color */
+  background-color: #7CA982; /* Green button color */
   color: #fff; /* White text color */
   cursor: pointer;
   margin: 20px 15px;
@@ -56,7 +54,6 @@
 }
 
 .form button:hover {
-  background-color: #145b33; /* Darker green on hover */
-  box-shadow: #0f172a;
-  /* text-shadow: #0f172a; */
+  background-color: #5C8D6B; /* Darker green on hover */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }

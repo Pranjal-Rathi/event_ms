@@ -8,8 +8,7 @@ export const AdminDetailsForm = () => {
   const [updateAdminId, setUpdateAdminId] = useState("");
   const [updateAdminUsername, setUpdateAdminUsername] = useState("");
   const [updateAdminEmail, setUpdateAdminEmail] = useState("");
-  const [updateAdminContactNumber, setUpdateAdminContactNumber] =
-    useState("");
+  const [updateAdminContactNumber, setUpdateAdminContactNumber] = useState("");
   const [deleteAdminId, setDeleteAdminId] = useState("");
 
   const handleSubmit = async (e) => {
@@ -32,15 +31,14 @@ export const AdminDetailsForm = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    // const contactNumber = e.target.value;
     try {
-      const response = await axios.put(
-        `http://localhost:1337/admins/${updateAdminId}`,
-        {
-          admin_username: updateAdminUsername,
-          admin_email: updateAdminEmail,
-          admin_contact_number: updateAdminContactNumber,
-        }
-      );
+      const response = await axios.put(`http://localhost:1337/admins`, {
+        admin_id: updateAdminId,
+        admin_username: updateAdminUsername,
+        admin_email: updateAdminEmail,
+        admin_contact_number: updateAdminContactNumber,
+      });
       console.log("admin details updated successfully");
       // Reset form
       setUpdateAdminId("");
@@ -55,9 +53,11 @@ export const AdminDetailsForm = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:1337/admins/${deleteAdminId}`
-      );
+      const response = await axios.delete(`http://localhost:1337/admins`, {
+        data: {
+          admin_id: deleteAdminId,
+        },
+      });
       console.log("admin deleted successfully");
       // Reset form
       setDeleteAdminId("");
@@ -68,7 +68,7 @@ export const AdminDetailsForm = () => {
 
   return (
     <div className="form">
-      <h1 style={{ color: "ORANGE" }}>ADMIN DETAILS</h1>
+      <h1>ADMIN DETAILS</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Username:
@@ -103,7 +103,7 @@ export const AdminDetailsForm = () => {
         <button type="submit">Submit Admin Details</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>UPDATE ADMIN</h1>
+      <h1>UPDATE ADMIN</h1>
       <form onSubmit={handleUpdate}>
         <label>
           Admin ID:
@@ -148,7 +148,7 @@ export const AdminDetailsForm = () => {
         <button type="submit">Update Admin</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>DELETE ADMIN</h1>
+      <h1>DELETE ADMIN</h1>
       <form onSubmit={handleDelete}>
         <label>
           Admin ID:

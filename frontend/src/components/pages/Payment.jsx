@@ -3,26 +3,31 @@ import axios from "axios";
 
 export const PaymentForm = () => {
   const [totalAmount, setTotalAmount] = useState("");
+  const [bookingID, setBookingID] = useState("");
+  const [serviceID, setServiceID] = useState("");
   const [taxes, setTaxes] = useState("");
   const [payType, setPayType] = useState("");
   const [payDate, setPayDate] = useState("");
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:1337/payments", {
-        totalAmount:totalAmount,
-        taxes:taxes,
-        payDate: payDate,
-        payType: payType
-
+        total_amount: totalAmount,
+        booking_id: bookingID,
+        service_id: serviceID,
+        taxes: taxes,
+        payment_type: payType,
+        payment_date: payDate,
       });
       console.log("Payment details submitted successfully");
       // Reset form
-      setComment("");
-      setRating("");
-      setPayDate("");
+      setTotalAmount("");
+      setBookingID("");
+      setServiceID("");
+      setTaxes("");
       setPayType("");
+      setPayDate("");
     } catch (error) {
       console.error("Error submitting Payment details:", error);
     }
@@ -30,7 +35,7 @@ export const PaymentForm = () => {
 
   return (
     <div className="form">
-      <h1 style={{ color: "orange" }}>PAYMENT FORM</h1>
+      <h1>PAYMENT FORM</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Total Amount:
@@ -48,6 +53,26 @@ export const PaymentForm = () => {
             value={taxes}
             onChange={(e) => setTaxes(e.target.value)}
             required
+          />
+        </label>
+        <label>
+          Booking ID:
+          <input
+            type="text"
+            value={bookingID}
+            onChange={(e) => setBookingID(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
+        <label>
+          Service ID:
+          <input
+            type="text"
+            value={serviceID}
+            onChange={(e) => setServiceID(e.target.value)}
+            required
+            style={{ color: "black" }}
           />
         </label>
         <label>
@@ -73,6 +98,6 @@ export const PaymentForm = () => {
       </form>
     </div>
   );
-}
+};
 
 // export default PaymentForm;

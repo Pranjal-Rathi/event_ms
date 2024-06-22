@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export const FeedbackDetailsForm = () => {
-  const [comment, setcomment] = useState("");
+  const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
+  const [booking_id, setBookingId] = useState("");
+  // const [booking_id, setBookingId] = useState("");
   const [updateFeedbackId, setUpdateFeedbackId] = useState("");
+  const [updateBookingId, setUpdateBookingId] = useState("");
   const [updateFeedbackComment, setUpdateFeedbackComment] = useState("");
   const [updateFeedbackRating, setUpdateFeedbackRating] = useState("");
   const [deleteFeedbackId, setDeleteFeedbackId] = useState("");
@@ -13,13 +16,15 @@ export const FeedbackDetailsForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:1337/feedbacks", {
-        comment:comment,
+        comment: comment,
         rating: rating,
+        booking_id: booking_id,
       });
       console.log("Feedback details submitted successfully");
       // Reset form
       setComment("");
       setRating("");
+      setBookingId("");
     } catch (error) {
       console.error("Error submitting Feedback details:", error);
     }
@@ -28,18 +33,18 @@ export const FeedbackDetailsForm = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:1337/feedbacks/${updateFeedbackId}`,
-        {
-          comment: updateFeedbackComment,
-          rating: updateFeedbackRating,
-        }
-      );
+      const response = await axios.put(`http://localhost:1337/feedbacks`, {
+        comment: updateFeedbackComment,
+        rating: updateFeedbackRating,
+        feedback_id: updateFeedbackId,
+        booking_id: updateBookingId,
+      });
       console.log("Feedback details updated successfully");
       // Reset form
       setUpdateFeedbackId("");
-      setUpdateComment("");
-      setUpdateRating("");
+      setUpdateFeedbackComment("");
+      setUpdateFeedbackRating("");
+      setUpdateBookingId("");
     } catch (error) {
       console.error("Error updating Feedback details:", error);
     }
@@ -48,9 +53,11 @@ export const FeedbackDetailsForm = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:1337/feedbacks/${deleteFeedbackId}`
-      );
+      const response = await axios.delete(`http://localhost:1337/feedbacks`, {
+        data: {
+          feedback_id: deleteFeedbackId,
+        },
+      });
       console.log("Feedback deleted successfully");
       // Reset form
       setDeleteFeedbackId("");
@@ -61,7 +68,7 @@ export const FeedbackDetailsForm = () => {
 
   return (
     <div className="form">
-      <h1 style={{ color: "ORANGE" }}>FEEDBACK DETAILS</h1>
+      <h1>FEEDBACK DETAILS</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Comment:
@@ -83,10 +90,20 @@ export const FeedbackDetailsForm = () => {
             style={{ color: "black" }}
           />
         </label>
+        <label>
+          Booking ID:
+          <input
+            type="text"
+            value={booking_id}
+            onChange={(e) => setBookingId(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
         <button type="submit">Submit Feedback Details</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>UPDATE FEEDBACK</h1>
+      <h1>UPDATE FEEDBACK</h1>
       <form onSubmit={handleUpdate}>
         <label>
           Feedback ID:
@@ -99,11 +116,21 @@ export const FeedbackDetailsForm = () => {
           />
         </label>
         <label>
+          Booking ID:
+          <input
+            type="text"
+            value={updateBookingId}
+            onChange={(e) => setUpdateBookingId(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
+        <label>
           Comment:
           <input
             type="text"
             value={updateFeedbackComment}
-            onChange={(e) => setUpdateComment(e.target.value)}
+            onChange={(e) => setUpdateFeedbackComment(e.target.value)}
             required
             style={{ color: "black" }}
           />
@@ -113,7 +140,7 @@ export const FeedbackDetailsForm = () => {
           <input
             type="text"
             value={updateFeedbackRating}
-            onChange={(e) => setUpdateRating(e.target.value)}
+            onChange={(e) => setUpdateFeedbackRating(e.target.value)}
             required
             style={{ color: "black" }}
           />
@@ -122,7 +149,7 @@ export const FeedbackDetailsForm = () => {
         <button type="submit">Update Feedback</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>DELETE FEEDBACK</h1>
+      <h1>DELETE FEEDBACK</h1>
       <form onSubmit={handleDelete}>
         <label>
           Feedback ID:

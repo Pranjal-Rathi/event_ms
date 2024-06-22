@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export const VenueDetailsForm = () => {
-  
   const [venueType, setVenueType] = useState("");
   const [venueName, setVenueName] = useState("");
   const [location, setLocation] = useState("");
@@ -24,8 +23,8 @@ export const VenueDetailsForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:1337/venues", {
-        venueType:venueType,
-        venueName: venueName,
+        v_type: venueType,
+        venue_name: venueName,
         location: location,
         time: time,
         capacity: capacity,
@@ -33,6 +32,7 @@ export const VenueDetailsForm = () => {
       });
       console.log("Venue details submitted successfully");
       // Reset form
+      setVenueType("");
       setVenueName("");
       setLocation("");
       setTime("");
@@ -46,22 +46,21 @@ export const VenueDetailsForm = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:1337/venues/${updateVenueId}`,
-        {
-          venueType: updateVenueTypeOld,
-          venueType: updateVenueTypeNew,
-          venueName: updateVenueName,
-          location: updateLocation,
-          time: updateTime,
-          capacity: updateCapacity,
-          date: updateDate,
-        }
-      );
+      const response = await axios.put(`http://localhost:1337/venues`, {
+        venue_id: updateVenueId,
+        old_venue_type: updateVenueTypeOld,
+        new_venue_type: updateVenueTypeNew,
+        venueName: updateVenueName,
+        location: updateLocation,
+        time: updateTime,
+        capacity: updateCapacity,
+        date: updateDate,
+      });
       console.log("Venue details updated successfully");
       // Reset form
-      setUpdateVenueTypeNew("")
       setUpdateVenueId("");
+      setUpdateVenueTypeNew("");
+      setUpdateVenueTypeOld("");
       setUpdateVenueName("");
       setUpdateLocation("");
       setUpdateTime("");
@@ -75,9 +74,11 @@ export const VenueDetailsForm = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:1337/venues/${deleteVenueId}`
-      );
+      const response = await axios.delete(`http://localhost:1337/venues`, {
+        data: {
+          venue_id: deleteVenueId,
+        },
+      });
       console.log("Venue deleted successfully");
       // Reset form
       setDeleteVenueId("");
@@ -89,8 +90,18 @@ export const VenueDetailsForm = () => {
 
   return (
     <div className="form">
-      <h1 style={{ color: "ORANGE" }}>VENUE DETAILS</h1>
+      <h1>VENUE DETAILS</h1>
       <form onSubmit={handleSubmit}>
+        <label>
+          Venue Type:
+          <input
+            type="text"
+            value={venueType}
+            onChange={(e) => setVenueType(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
         <label>
           Venue Name:
           <input
@@ -144,7 +155,7 @@ export const VenueDetailsForm = () => {
         <button type="submit">Submit Venue Details</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>UPDATE VENUE</h1>
+      <h1>UPDATE VENUE</h1>
       <form onSubmit={handleUpdate}>
         <label>
           Venue ID:
@@ -152,6 +163,26 @@ export const VenueDetailsForm = () => {
             type="text"
             value={updateVenueId}
             onChange={(e) => setUpdateVenueId(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
+        <label>
+          Previous Venue Type:
+          <input
+            type="text"
+            value={updateVenueTypeOld}
+            onChange={(e) => setUpdateVenueTypeOld(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
+        <label>
+          New Venue Type:
+          <input
+            type="text"
+            value={updateVenueTypeNew}
+            onChange={(e) => setUpdateVenueTypeNew(e.target.value)}
             required
             style={{ color: "black" }}
           />
@@ -209,7 +240,7 @@ export const VenueDetailsForm = () => {
         <button type="submit">Update Venue</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>DELETE VENUE</h1>
+      <h1>DELETE VENUE</h1>
       <form onSubmit={handleDelete}>
         <label>
           Venue ID:
@@ -226,6 +257,5 @@ export const VenueDetailsForm = () => {
     </div>
   );
 };
-
 
 // export default VenueDetailsForm;

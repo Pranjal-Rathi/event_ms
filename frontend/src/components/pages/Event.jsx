@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export const EventDetailsForm = () => {
+  const [venueId, setVenueId] = useState("");
   const [eventType, setEventType] = useState("");
   const [eventName, setEventName] = useState("");
   const [updateEventId, setUpdateEventId] = useState("");
@@ -14,11 +15,13 @@ export const EventDetailsForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:1337/events", {
+        venue_id: venueId,
         event_type: eventType,
         event_name: eventName,
       });
       console.log("Event details submitted successfully");
       // Reset form
+      setVenueId("");
       setEventType("");
       setEventName("");
     } catch (error) {
@@ -29,14 +32,12 @@ export const EventDetailsForm = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:1337/events/${updateEventId}`,
-        {
-          event_type: updateEventType,
-          new_event_name: updateEventNameNew,
-          prev_event_name: updateEventNamePrev,
-        }
-      );
+      const response = await axios.put(`http://localhost:1337/events`, {
+        event_id: updateEventId,
+        event_type: updateEventType,
+        new_event_name: updateEventNameNew,
+        prev_event_name: updateEventNamePrev,
+      });
       console.log("Event details updated successfully");
       // Reset form
       setUpdateEventId("");
@@ -51,9 +52,11 @@ export const EventDetailsForm = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:1337/events/${deleteEventId}`
-      );
+      const response = await axios.delete(`http://localhost:1337/events`, {
+        data: {
+          event_id: deleteEventId,
+        },
+      });
       console.log("Event deleted successfully");
       // Reset form
       setDeleteEventId("");
@@ -62,11 +65,20 @@ export const EventDetailsForm = () => {
     }
   };
 
-  
   return (
     <div className="form">
-      <h1 style={{ color: "ORANGE" }}>EVENT DETAILS</h1>
+      <h1>EVENT DETAILS</h1>
       <form onSubmit={handleSubmit}>
+        <label>
+          Venue ID:
+          <input
+            type="text"
+            value={venueId}
+            onChange={(e) => setVenueId(e.target.value)}
+            required
+            style={{ color: "black" }}
+          />
+        </label>
         <label>
           Event Type:
           <input
@@ -90,7 +102,7 @@ export const EventDetailsForm = () => {
         <button type="submit">Submit Event Details</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>UPDATE EVENT</h1>
+      <h1>UPDATE EVENT</h1>
       <form onSubmit={handleUpdate}>
         <label>
           Event ID:
@@ -118,7 +130,7 @@ export const EventDetailsForm = () => {
             type="text"
             value={updateEventNamePrev}
             onChange={(e) => setUpdateEventNamePrev(e.target.value)}
-            required
+            // required
             style={{ color: "black" }}
           />
         </label>
@@ -128,18 +140,18 @@ export const EventDetailsForm = () => {
             type="text"
             value={updateEventNameNew}
             onChange={(e) => setUpdateEventNameNew(e.target.value)}
-            required
+            // required
             style={{ color: "black" }}
           />
         </label>
         <button type="submit">Update Event</button>
       </form>
 
-      <h1 style={{ color: "orange" }}>DELETE EVENT</h1>
+      <h1>DELETE EVENT</h1>
       <form onSubmit={handleDelete}>
         {/* <p>Event ID:</p> */}
         <label>
-          Event ID: 
+          Event ID:
           <input
             type="text"
             value={deleteEventId}
@@ -152,6 +164,6 @@ export const EventDetailsForm = () => {
       </form>
     </div>
   );
-}
+};
 
 export default EventDetailsForm;
